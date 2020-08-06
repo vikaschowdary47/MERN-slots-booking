@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form'
 
 export const User = ({match}) => {
     const [user,setUser] = useState({})
+    const [slotBooked,setSlotBooked] = useState(false)
     const [selectedDate,setSelectedDate] = useState(new Date())
     const  id=match.params.id
 
@@ -13,19 +14,11 @@ export const User = ({match}) => {
         const getUsers = async() => {
             await axios.get(`https://reqres.in/api/users/${id}`)
                 .then(res => {
-                    console.log(res.data)
+                    // console.log(res.data)
                     setUser(res.data.data)
                 })
         }
         getUsers();
-
-        // const bookSlot = async() => {
-        //     const slot = {
-        //         name:`${user.first_name} ${user.last_name}`,
-        //         email:`{user.email}`
-        //     }
-        //     await axios.post()
-        // }
     },[id])
 
     const onSubmit = (e) => {
@@ -36,17 +29,28 @@ export const User = ({match}) => {
             date:selectedDate
         }
         console.log(slot);
+
+        axios.post('http://localhost:9000/api/slot/book', slot)
+            .then(res => {
+                console.log(res.data)
+                if(res.data === 'slot booked!') alert('Your slot is booked')
+                setSlotBooked(true)
+            })
     }
 
+    const doubleBooking = (e) => {
+        e.preventDefault();
+        alert('Your slot is already booked!')
+    }
 
     return (
         <div style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',marginTop:'40px'}}>
             <img src={user.avatar} alt={user.first_name}/>
-            <Form onSubmit={onSubmit}>
+            <Form onSubmit={slotBooked ? doubleBooking : onSubmit}>
             <h5> Name: {`${user.first_name} ${user.last_name}`} </h5>   
             <h5>Email: {user.email}</h5>
             <DatePicker className='ml-5' selected={selectedDate} minDate={new Date()} isClearable showYearDropdown scrollableMonthYearDropdown onChange={date => setSelectedDate(date)}/><br />
-            <button className='btn btn-primary mt-3 ml-5' type='submit'>Book Slot</button>
+            <button className={slotBooked ? 'btn btn-primary mt-3 ml-5 disabled' : 'btn btn-primary mt-3 ml-5'} type='submit'>Book Slot</button>
             </Form>
         </div>
     )
