@@ -35,7 +35,7 @@ export const Users = () => {
             style={{margin:'50px 0'}}></input>
             {filteredUsers.map(user => (
                     <div key={user.id} style={{display:'flex',flexDirection:'column'}}>
-                        <Link to =`/users/${user.id}`>
+                        <Link to ={`/users/${user.id}`}>
                     <img src={user.avatar} width='40' height='40' alt={user.first_name}/>
             
                    <h5> {`${user.first_name} ${user.last_name}`} </h5>
