@@ -24,5 +24,32 @@ router.get('/', async(req,res) => {
         .catch(err => res.status(400).json('Error ' +err))
 })
 
+// get slots by id
+router.get('/:id', async(req,res) => {
+    Slot.findById(req.params.id)
+        .then((slot) => res.json(slot))
+        .catch(err => res.status(400).json('Error ' +err))
+
+})
+
+// delteslots
+router.delete('/:id', async(req,res) => {
+    Slot.findByIdAndDelete(req.params.id)
+        .then(() => res.json('slot unbooked!'))
+        .catch(error => res.status(400).json(error))
+})
+
+// updateSlot 
+router.post('/update/:id', (req,res) => {
+    Slot.findById(req.params.id)
+        .then(slot => {
+            slot.date = Date.parse(req.body.date);
+
+            slot.save()
+                .then(() => res.json('Slot Changed!'))
+                .catch(error => res.status(400).json('Error ' + error))
+        })
+})
+
 
 module.exports = router;

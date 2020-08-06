@@ -12,7 +12,7 @@ export const Users = () => {
         const getUsers = async() => {
             await axios.get('https://reqres.in/api/users')
                 .then(res => {
-                    console.log(res.data.data)
+                    // console.log(res.data.data)
                     setUsers(res.data.data)
                 })
         

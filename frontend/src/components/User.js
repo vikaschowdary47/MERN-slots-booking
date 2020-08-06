@@ -40,7 +40,7 @@ export const User = ({match}) => {
 
     const doubleBooking = (e) => {
         e.preventDefault();
-        alert('Your slot is already booked!')
+        alert('OOPS! Your slot is already booked!')
     }
 
     return (
